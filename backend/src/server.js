@@ -11,7 +11,13 @@ const app = express();
 
 connectDB();
 
-app.use(express.json());
+app.use(express.json()); //turns frontend data into json
+
+
+app.use((req, res, next) => {
+    console.log(`req method is ${req.method} and the url is ${req.url} and the body is ${req.body}`)
+    next();
+});
 app.use("/api/notes", notesRoutes);
 
 app.listen(port, () => {
@@ -19,5 +25,4 @@ app.listen(port, () => {
 });
 
 
-//mongodb+srv://asarrafz_db_user:fsCX1JEEELESs66m@cluster0.bbc8xtv.mongodb.net/?appName=Cluster0
 
