@@ -12,7 +12,7 @@ const app = express();
 connectDB();
 
 app.use(express.json()); //turns frontend data into json
-
+app.use(rateLimiter);
 
 app.use((req, res, next) => {
     console.log(`req method is ${req.method} and the url is ${req.url} and the body is ${req.body}`)
