@@ -9,7 +9,7 @@ dotenv.config();
 const port = process.env.PORT || 5001;
 const app = express();
 
-connectDB();
+
 
 app.use(express.json()); //turns frontend data into json
 app.use(rateLimiter);
@@ -20,8 +20,15 @@ app.use((req, res, next) => {
 });
 app.use("/api/notes", notesRoutes);
 
-app.listen(port, () => {
-    console.log("Server is running on port 5001");
+
+connectDB().then(() => {
+    console.log("Connected to MongoDB");
+    app.listen(port, () => {
+        console.log("Server is running on port 5001");
+    });
+}).catch((error) => {
+    console.error("error connecting to MongoDB", error);
+    process.exit(1); // exit with failure
 });
 
 

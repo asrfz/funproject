@@ -12,7 +12,7 @@ const rateLimiter = async (req, res, next) => {
         console.error("error in rateLimiter", error);
         next(error);
     }
-
+}
 
 
 export default rateLimiter;
