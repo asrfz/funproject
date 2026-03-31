@@ -1,11 +1,13 @@
 //Vite is the dev server that runs your React code locally, converts it into browser-readable JavaScript, and serves it on localhost so you can see your app while developing.
-
-const App = () => {
+import Navbar from "../components/navbar";
+const HomePage = () => {
+  const [rateLimited, setIsRateLimited] = useState(false);
     return (
-      <div>
-        <h1>Hello World</h1>
+      <div className="min-h-screen">
+        <Navbar />
+        {isRateLImited && <RateLimitedUI />}
       </div>
     )
   }
   
-  export default App;
+  export default HomePage;
