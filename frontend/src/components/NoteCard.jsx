@@ -1,8 +1,33 @@
 import { Link } from "react-router-dom";
 import { PenSquareIcon, TrashIcon } from "lucide-react";
 import { formatDate } from "../lib/utils";
+import api from "../lib/axios";
 
-const NoteCard = ({ note }) => {
+const NoteCard = ({ note, setNotes }) => {
+
+
+    const handleDelete = async (e) => {
+        e.preventDefault();
+
+
+        if(!window.confirm("Are you sure you want to delete this note?")) return;
+
+
+        try{
+            await api.delete(`/notes/${note.id}`);
+            setNotes((prev) => prev.filter((n) => n._id !== note._id));
+            toast.success("Note deleted successfully");
+        }catch(error){
+            toast.error("Error deleting note");
+            console.error("error deleting note", error);
+            if(error.response.status === 429){
+                return toast.error("Rate limit exceeded. Please try again later.");
+            }
+        }finally{
+            setLoading(false);
+        }
+    }
+
     return (
         <Link to={`/notes/${note._id}`}
             className="card bg-base-100 hover:shadow-lg transition-all duration-200 border-t-4 border-solid border-[#00FF9D]">
@@ -18,7 +43,7 @@ const NoteCard = ({ note }) => {
                             <PenSquareIcon className="size-4" />
                         </button>
                         <button className="btn btn-ghost btn-xs text-error">
-                            <TrashIcon className="size-4" />
+                            <TrashIcon className="size-4" onClick={(e) =>handleDelete(e, note.id)}/>
                         </button>
                     </div>
                 </div>
