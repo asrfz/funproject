@@ -2,6 +2,8 @@ import express from "express";
 import connectDB from "./config/db.js";
 import notesRoutes from "./routes/notesRoutes.js";
 import dotenv from "dotenv";
+import cors from "cors";
+import rateLimiter from "./middleware/rateLimiter.js";
 
 
 dotenv.config();
@@ -10,9 +12,12 @@ const port = process.env.PORT || 5001;
 const app = express();
 
 
-
+app.use(cors({
+    origin: "http://localhost:5173",
+}));
 app.use(express.json()); //turns frontend data into json
 app.use(rateLimiter);
+
 
 app.use((req, res, next) => {
     console.log(`req method is ${req.method} and the url is ${req.url} and the body is ${req.body}`)
