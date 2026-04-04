@@ -18,6 +18,7 @@
     "cors": "^2.8.6",
     "dotenv": "^17.3.1",
     "express": "^4.18.2",
+    "funproject-1": "file:..",
     "mongoose": "^8.14.3"
   },
   "devDependencies": {
