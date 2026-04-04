@@ -19,4 +19,17 @@ const noteSchema = new mongoose.Schema({
 
 const Note = mongoose.model("Note", noteSchema);
 
+/*
+const Note = mongoose.model(...)
+
+👉 creates something like:
+
+class Note {
+  // built-in methods:
+  static find() {}
+  static findById() {}
+  
+  save() {}
+}
+*/
 export default Note;
