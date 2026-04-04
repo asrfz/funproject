@@ -4,12 +4,14 @@ import notesRoutes from "./routes/notesRoutes.js";
 import dotenv from "dotenv";
 import cors from "cors";
 import rateLimiter from "./middleware/rateLimiter.js";
+import path from "path";
 
 
 dotenv.config();
 
 const port = process.env.PORT || 5001;
 const app = express();
+const __dirname = path.resolve();
 
 
 app.use(cors({
@@ -24,6 +26,8 @@ app.use((req, res, next) => {
     next();
 });
 app.use("/api/notes", notesRoutes);
+
+app.use(express.static(path.join(__dirname, "frontend", "dist"))))
 
 
 connectDB().then(() => {

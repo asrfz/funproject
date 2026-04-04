@@ -2,34 +2,31 @@ import { Link } from "react-router-dom";
 import { PenSquareIcon, TrashIcon } from "lucide-react";
 import { formatDate } from "../lib/utils";
 import api from "../lib/axios";
+import toast from "react-hot-toast";
 
 const NoteCard = ({ note, setNotes }) => {
-
-
     const handleDelete = async (e) => {
         e.preventDefault();
+        e.stopPropagation();
 
+        if (!window.confirm("Are you sure you want to delete this note?")) return;
 
-        if(!window.confirm("Are you sure you want to delete this note?")) return;
-
-
-        try{
-            await api.delete(`/notes/${note.id}`);
+        try {
+            await api.delete(`/notes/${note._id}`);
             setNotes((prev) => prev.filter((n) => n._id !== note._id));
             toast.success("Note deleted successfully");
-        }catch(error){
-            toast.error("Error deleting note");
+        } catch (error) {
             console.error("error deleting note", error);
-            if(error.response.status === 429){
-                return toast.error("Rate limit exceeded. Please try again later.");
+            if (error.response && error.response.status === 429) {
+                toast.error("Rate limit exceeded. Please try again later.");
+            } else {
+                toast.error("Error deleting note");
             }
-        }finally{
-            setLoading(false);
         }
-    }
+    };
 
     return (
-        <Link to={`/notes/${note._id}`}
+        <Link to={`/note/${note._id}`}
             className="card bg-base-100 hover:shadow-lg transition-all duration-200 border-t-4 border-solid border-[#00FF9D]">
             <div className="card-body">
                 <h3 className="card-title text-base-content">{note.title}</h3>
@@ -42,8 +39,8 @@ const NoteCard = ({ note, setNotes }) => {
                         <button className="btn btn-ghost btn-xs">
                             <PenSquareIcon className="size-4" />
                         </button>
-                        <button className="btn btn-ghost btn-xs text-error">
-                            <TrashIcon className="size-4" onClick={(e) =>handleDelete(e, note.id)}/>
+                        <button className="btn btn-ghost btn-xs text-error" onClick={handleDelete}>
+                            <TrashIcon className="size-4" />
                         </button>
                     </div>
                 </div>
