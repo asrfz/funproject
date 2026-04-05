@@ -11,12 +11,12 @@ const HomePage = () => {
   const [notes, setNotes] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchNotes = async () => {
+  useEffect(() => { //runs once when the page loads
+    const fetchNotes = async () => { //the actual function occurring
       try {
-        const res = await api.get("/notes");
+        const res = await api.get("/notes"); //get req to backend route /notes
         console.log(res.data);
-        setNotes(res.data);
+        setNotes(res.data); //gets all notes and puts into notes var
         setIsRateLimited(false);
       } catch (error) {
         console.error("error fetching notes", error);
@@ -35,7 +35,7 @@ const HomePage = () => {
   return (
     <div className="min-h-screen">
       <Navbar />
-      {rateLimited && <RateLimitedUI />}
+      {rateLimited && <RateLimitedUI />} 
       <div className="max-w-7xl mx-auto px-4 mt-6">
         {loading && <div className="text-center text-primary py-10">loading notes...</div>}
 
